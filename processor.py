@@ -32,9 +32,11 @@ def transcribe_with_openai(audio_path, language=None):
         raise RuntimeError("openai package not installed or OPENAI_API_KEY not provided.")
     openai.api_key = os.getenv("OPENAI_API_KEY")
     with open(audio_path, "rb") as f:
-        # The method name depends on openai package version. We'll call Audio.transcribe per typical usage.
-        # If your openai package version differs, adapt this call accordingly.
-        transcript = openai.Audio.transcribe("whisper-1", f)
+        # Pass language as a keyword argument for openai 0.28.1 compatibility
+        kwargs = {"model": "whisper-1", "file": f}
+        if language:
+            kwargs["language"] = language
+        transcript = openai.Audio.transcribe(**kwargs)
     text = transcript.get("text") if isinstance(transcript, dict) else getattr(transcript, "text", None)
     return text
 
