@@ -1,0 +1,7 @@
+Flask>=2.0
+requests
+gTTS>=2.3
+pydub>=0.25
+googletrans==4.0.0-rc1
+openai
+openai-whisper
